@@ -1,13 +1,15 @@
-lib_dir = File.join(File.dirname(__FILE__), 'lib', 'easy_baseline')
+# Redmine patches wrapped safely for Zeitwerk & Rails 7
+require_relative 'lib/easy_baseline'
+require_relative 'lib/easy_baseline/hooks'
+require_relative 'lib/easy_baseline/project_patch'
+require_relative 'lib/easy_baseline/version_patch'
+require_relative 'lib/easy_baseline/issue_patch'
 
-# Redmine patches
-patch_path = File.join(lib_dir, '*_patch.rb')
-Dir.glob(patch_path).each do |file|
-  require file
+Rails.configuration.to_prepare do
+  Project.prepend EasyBaseline::ProjectPatch unless Project.ancestors.include?(EasyBaseline::ProjectPatch)
+  Version.prepend EasyBaseline::VersionPatch unless Version.ancestors.include?(EasyBaseline::VersionPatch)
+  Issue.prepend EasyBaseline::IssuePatch unless Issue.ancestors.include?(EasyBaseline::IssuePatch)
 end
-
-require lib_dir
-require File.join(lib_dir, 'hooks')
 
 Redmine::AccessControl.map do |map|
   map.project_module :easy_baselines do |pmap|

@@ -24,5 +24,3 @@ module EasyBaseline
 
   end
 end
-Version.prepend EasyBaseline::VersionPatch
-

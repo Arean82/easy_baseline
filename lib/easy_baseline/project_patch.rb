@@ -6,7 +6,7 @@ module EasyBaseline
       base.singleton_class.prepend(ClassMethods)
 
       base.class_eval do
-        belongs_to :easy_baseline_for, class_name: 'Project'
+        belongs_to :easy_baseline_for, class_name: 'Project', optional: true
         has_many :easy_baseline_sources, foreign_key: 'baseline_id'
 
         before_save :prevent_unarchive_easy_baseline
@@ -79,5 +79,3 @@ module EasyBaseline
     end
   end
 end
-Project.prepend EasyBaseline::ProjectPatch
-

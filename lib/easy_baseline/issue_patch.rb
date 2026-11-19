@@ -20,5 +20,3 @@ module EasyBaseline
 
   end
 end
-Issue.prepend EasyBaseline::IssuePatch
-
